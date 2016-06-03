@@ -28,14 +28,20 @@ public class kafkaProducer{
 
         ProducerConfig config = new ProducerConfig(props);
         Producer<String, String> producer = new Producer<String, String>(config); //Producer is ready with all the config set
-
-        for(int i =0;i<1000;i++){
-            String va = Integer.toString(i);
-            KeyedMessage<String, String> message = new KeyedMessage<String, String>("test", "Message "+ va);
-            producer.send(message);
-            System.out.println(i);
+        try{
+            for(int i =0;i<1000;i++){
+                String va = Integer.toString(i);
+                KeyedMessage<String, String> message = new KeyedMessage<String, String>("test", "Message "+ va);
+                producer.send(message);
+                System.out.println(i);
+            }
         }
-
+        catch (Throwable throwable){
+            System.out.printf("%s" , throwable.getStackTrace());
+        }
+        finally {
+            producer.close();
+        }
 
     }
 
